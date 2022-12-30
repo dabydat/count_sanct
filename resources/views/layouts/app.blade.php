@@ -16,15 +16,16 @@
     <script src="{{ asset('js/jquery.datatables.min.js') }}" type="text/javascript"></script>
     <script src="{{ asset('js/datatables.bootstrap4.min.js') }}" type="text/javascript"></script>
     <script src="{{ asset('js/datatables.responsive.bootstrap4.min.js') }}" type="text/javascript"></script>
-
+    <script src="{{ asset('fontawesome/js/all.min.js') }}" type="text/javascript"></script>
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
 
     <!-- Styles -->
-    @vite('resources/css/app.css')
-    <link rel="stylesheet" type="text/css" src="{{ asset('css/datatable.min.css') }}"/>
-
+    <link type="text/css" rel="stylesheet" href="{{ asset('css/app.css') }}">
+    <link rel="stylesheet" src="{{ asset('css/datatable.min.css') }}"/>
+    <link rel="stylesheet" type="text/css" href="{{ asset('fontawesome/css/all.css') }}">
+    
 </head>
 
 <body>

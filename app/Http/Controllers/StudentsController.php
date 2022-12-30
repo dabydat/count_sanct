@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StudentRequest;
-use App\Models\Students;
+use App\Models\Student;
 use Illuminate\Http\Request;
 
 class StudentsController extends Controller
@@ -19,21 +19,21 @@ class StudentsController extends Controller
     }
 
     public function list(Request $request){
-        $totalRecords = 0;
         $draw = $request->draw;
-        $data = Students::all();
-        if ($request->start <> "") $data = $data->skip($request->start);
-        if ($request->length <> "") $data = $data->take($request->length);
-        $totalRecords = Students::all()->count();
+        $data = Student::getAllStudents($request)->get();
+        $totalRecords = Student::countAllStudents();
         $datas = [];
         foreach ($data as $key => $value) {
+            $status = $value->status == true ? 'Activado' : 'Desactivado';
             $datas[] = [
-                'id' => $value->id,
+                'nro' => $value->nro,
                 'name' => $value->name,
                 'last_name' => $value->last_name,
                 'dni' => $value->dni,
                 'phone' => $value->phone,
                 'email' => $value->email,
+                'status' => $status,
+                'actions' => $this->getAction('students', $value->id)
             ];
         }
 
@@ -45,6 +45,12 @@ class StudentsController extends Controller
         );
 
         return json_encode($response);
+    }
+
+    public function getAction($route, $id){
+        $actions = "<a class='btn btn-outline-primary btn-sm mr-2' href='" . route($route . '.show', $id) . "' title='Ver'><i class='fa fa-eye'></i></a>";
+        $actions .= "<a class='btn btn-outline-primary btn-sm' href='" . route($route . '.edit', $id) . "' title='Editar'><i class='fa fa-edit'></i></a>";
+        return "<div class='text-center d-flex justify-content-around'>" . $actions . "</div>";
     }
 
     /**
@@ -78,6 +84,7 @@ class StudentsController extends Controller
      */
     public function show($id)
     {
+        return view('students.create-edit');
         //
     }
 
@@ -89,6 +96,7 @@ class StudentsController extends Controller
      */
     public function edit($id)
     {
+        return view('students.create-edit');
         //
     }
 
