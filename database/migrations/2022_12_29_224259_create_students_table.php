@@ -20,7 +20,10 @@ return new class extends Migration
             $table->string('dni', 10)->nullable();
             $table->string('phone', 25)->nullable();
             $table->string('email')->unique();
-            $table->timestamps();
+            $table->boolean('status')->default(true);
+            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('updated_at')->nullable()->useCurrentOnUpdate();
+            $table->timestamp('deleted_at')->nullable();
         });
     }
 

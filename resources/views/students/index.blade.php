@@ -21,6 +21,8 @@
                             <th>Cedula</th>
                             <th>Teléfono</th>
                             <th>Correo</th>
+                            <th>Estatus</th>
+                            <th>Acciones</th>
                         </tr>
                     </thead>
                 </table>
@@ -58,7 +60,7 @@
                     },
                 },
                 columns: [{
-                        data: 'id',
+                        data: 'nro',
                         orderable: false
                     },
                     {
@@ -76,6 +78,14 @@
                         orderable: false
                     }, {
                         data: 'email',
+                        orderable: false
+                    },
+                    {
+                        data: 'status',
+                        orderable: false
+                    },
+                    {
+                        data: 'actions',
                         orderable: false
                     },
                 ],

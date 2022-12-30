@@ -26,6 +26,8 @@ Route::group(['middleware' => ['auth']], function () {
             Route::post('/studentsList', 'list')->name('list');
             Route::get('/students/create', 'create')->name('create');
             Route::post('/students/store', 'store')->name('store');
+            Route::get('/students/show/{id}', 'show')->name('show');
+            Route::get('/students/edit/{id}', 'edit')->name('edit');
         });
     });
 });
