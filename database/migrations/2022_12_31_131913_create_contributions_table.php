@@ -15,8 +15,8 @@ return new class extends Migration
     {
         Schema::create('contributions', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('student_id');
-            $table->foreignId('category_id');
+            $table->foreignId('student_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('category_id')->constrained()->cascadeOnDelete();
             $table->decimal('amount', $precision = 8, $scale = 2);
             $table->text('description')->nullable();
             $table->boolean('status')->default(true);

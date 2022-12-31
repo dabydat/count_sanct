@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::table('contributions', function (Blueprint $table) {
-            $table->foreignId('period_id');
+            $table->foreignId('period_id')->constrained()->cascadeOnDelete();
         });
     }
 
@@ -26,7 +26,7 @@ return new class extends Migration
     public function down()
     {
         Schema::table('contributions', function (Blueprint $table) {
-            //
+            $table->dropForeign('contributions_period_id_foreign');
         });
     }
 };

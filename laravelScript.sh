@@ -1,5 +1,4 @@
-php artisan migrate:rollback
-php artisan migrate
+php artisan migrate:refresh
 php artisan db:seed --class=UserTableSeeder
 php artisan db:seed --class=StudentTableSeeder
 php artisan db:seed --class=CategoryTableSeeder
