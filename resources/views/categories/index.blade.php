@@ -4,10 +4,10 @@
     <div class="container">
         <div class="row d-flex align-items-center justify-content-around mb-3">
             <div class="col-8">
-                <h1>Estudiantes</h1>
+                <h1>Categorias</h1>
             </div>
             <div class="col-2">
-                <a href="{{ route('students.create') }}" class="btn btn-outline-primary">Nuevo Estudiante</a>
+                <a href="{{ route('categories.create') }}" class="btn btn-outline-primary">Nueva Categoria</a>
             </div>
         </div>
         <div class="row">
@@ -16,11 +16,7 @@
                     <thead>
                         <tr class="text-center">
                             <th style="width:20px">N°</th>
-                            <th>Nombre</th>
-                            <th>Apellido</th>
-                            <th>Cedula</th>
-                            <th>Teléfono</th>
-                            <th>Correo</th>
+                            <th>Descripcion</th>
                             <th>Estatus</th>
                             <th>Acciones</th>
                         </tr>
@@ -33,14 +29,14 @@
 @section('js')
     <script type="text/javascript">
         $(document).ready(function() {
-            studentsList();
+            categoriesList();
         });
 
         $(document).one('click', '.toggle-group', function() {
             $('input[type=checkbox]').on('change', function(event) {
                 $.ajax({
                     type: "PATCH",
-                    url: "/students/changeStatus/" + $(this).prop("id").replace("statusCheck", ""),
+                    url: "/categories/changeStatus/" + $(this).prop("id").replace("statusCheck", ""),
                     data: {
                         status: $(this).is(':checked') == true ? true : false,
                         _token: '{{ csrf_token() }}',
@@ -49,7 +45,7 @@
             });
         });
 
-        function studentsList() {
+        function categoriesList() {
             var token = $("input[name~='_token']").val();
             $("#dataTable").DataTable({
                 serverSide: true,
@@ -67,7 +63,7 @@
                     // "processing": '<i class="fa fa-spinner fa-spin fa-2x fa-fw"></i>'
                 },
                 ajax: {
-                    url: "{{ route('students.list') }}",
+                    url: "{{ route('categories.list') }}",
                     type: "POST",
                     data: {
                         "_token": token,
@@ -78,23 +74,7 @@
                         orderable: false
                     },
                     {
-                        data: 'name',
-                        orderable: false
-                    },
-                    {
-                        data: 'last_name',
-                        orderable: false
-                    },
-                    {
-                        data: 'dni',
-                        orderable: false
-                    },
-                    {
-                        data: 'phone',
-                        orderable: false
-                    },
-                    {
-                        data: 'email',
+                        data: 'description',
                         orderable: false
                     },
                     {
@@ -109,7 +89,6 @@
                 "fnDrawCallback": function() {
                     $('input[type=checkbox][data-toggle^=toggle]').bootstrapToggle()
                 },
-
             });
         }
     </script>

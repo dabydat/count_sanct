@@ -13,19 +13,19 @@
     <!-- Scripts -->
     @vite('resources/js/app.js')
     <script src="{{ asset('js/jquery.min.js') }}" type="text/javascript"></script>
-    <script src="{{ asset('js/jquery.datatables.min.js') }}" type="text/javascript"></script>
-    <script src="{{ asset('js/datatables.bootstrap4.min.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('vendor/datatables/js/jquery.dataTables.min.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('vendor/datatables/js/dataTables.bootstrap4.min.js') }}" type="text/javascript"></script>
     <script src="{{ asset('js/datatables.responsive.bootstrap4.min.js') }}" type="text/javascript"></script>
     <script src="{{ asset('fontawesome/js/all.min.js') }}" type="text/javascript"></script>
     <script src="{{ asset('js/bootstrap4-toggle.min.js') }}" type="text/javascript"></script>
     <script src="{{ asset('vendor/jsvalidation/js/jsvalidation.js') }}" type="text/javascript"></script>
-
+    
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
 
     <!-- Styles -->
     <link type="text/css" rel="stylesheet" href="{{ asset('css/app.css') }}">
-    <link rel="stylesheet" src="{{ asset('css/datatable.min.css') }}"/>
+    <link rel="stylesheet" src="{{ asset('vendor/datatables/css/dataTables.bootstrap4.min.css') }}"/>
     <link rel="stylesheet" type="text/css" href="{{ asset('fontawesome/css/all.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('css/bootstrap4-toggle.min.css') }}">
     
@@ -68,6 +68,9 @@
                         @else
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ route('students.index') }}">{{ __('Estudiantes') }}</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('categories.index') }}">{{ __('Categorias') }}</a>
                             </li>
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"

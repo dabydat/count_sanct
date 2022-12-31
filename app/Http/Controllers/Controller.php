@@ -30,4 +30,12 @@ class Controller extends BaseController
     {
         return explode('.', $data)[1];
     }
+
+    public function getAction($route, $id)
+    {
+        $actions = '';
+        $actions .= "<a class='btn btn-outline-primary btn-sm mr-2' href='" . route($route . '.show', $id) . "' title='Ver'><i class='fa fa-eye'></i></a>";
+        $actions .= "<a class='btn btn-outline-primary btn-sm' href='" . route($route . '.edit', $id) . "' title='Editar'><i class='fa fa-edit'></i></a>";
+        return "<div class='text-center d-flex justify-content-around'>" . $actions . "</div>";
+    }
 }

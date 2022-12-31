@@ -2,12 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StudentRequest;
-use App\Models\Student;
-use DB;
+use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
-class StudentsController extends Controller
+class CategoryController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,14 +15,14 @@ class StudentsController extends Controller
      */
     public function index()
     {
-        return view('students.index');
+        return view('categories.index');
     }
 
     public function list(Request $request)
     {
         $draw = $request->draw;
-        $data = Student::getAllStudents($request)->get();
-        $totalRecords = Student::countAllStudents();
+        $data = Category::getAllCategories($request)->get();
+        $totalRecords = Category::countAllCategories();
         $datas = [];
         foreach ($data as $key => $value) {
             $checked = $value->status == true ? 'checked' : '';
@@ -31,13 +30,9 @@ class StudentsController extends Controller
 
             $datas[] = [
                 'nro' => $value->nro,
-                'name' => $value->name,
-                'last_name' => $value->last_name,
-                'dni' => $value->dni,
-                'phone' => $value->phone,
-                'email' => $value->email,
+                'description' => $value->description,
                 'status' => $btn_status,
-                'actions' => $this->getAction('students', $value->id)
+                'actions' => $this->getAction('categories', $value->id)
             ];
         }
 
@@ -51,13 +46,6 @@ class StudentsController extends Controller
         return json_encode($response);
     }
 
-    public function getAction($route, $id)
-    {
-        $actions = "<a class='btn btn-outline-primary btn-sm mr-2' href='" . route($route . '.show', $id) . "' title='Ver'><i class='fa fa-eye'></i></a>";
-        $actions .= "<a class='btn btn-outline-primary btn-sm' href='" . route($route . '.edit', $id) . "' title='Editar'><i class='fa fa-edit'></i></a>";
-        return "<div class='text-center d-flex justify-content-around'>" . $actions . "</div>";
-    }
-
     /**
      * Show the form for creating a new resource.
      *
@@ -66,8 +54,7 @@ class StudentsController extends Controller
     public function create(Request $request)
     {
         $method = $this->method($request->route()->getName());
-        return view('students.form', compact('method'));
-        //
+        return view('categories.form', compact('method'));
     }
 
     /**
@@ -76,27 +63,17 @@ class StudentsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StudentRequest $request)
+    public function store(Request $request)
     {
         try {
-            Student::updateOrCreate(
-                ['email' => $request->input('email')],
-                [
-                    'name' => $request->input('name'),
-                    'last_name' => !is_null($request->input('last_name')) ? $request->input('last_name') : 'NA',
-                    'dni' => !is_null($request->input('dni')) ? $request->input('dni') : 'NA',
-                    'phone' => !is_null($request->input('phone')) ? $request->input('phone') : 'NA',
-                    'status' => true
-                ]
-            );
+            Category::updateOrCreate(['description' => $request->input('description')], ['status' => true]);
             DB::commit();
-            return redirect()->route('students.index');
+            return redirect()->route('categories.index');
         } catch (\Throwable $th) {
             DB::rollback();
-            $this->handleExceptionLog('StudentsController.store', $th->getMessage());
+            $this->handleExceptionLog('CategoryController.store', $th->getMessage());
             return redirect()->back();
         }
-
     }
 
     /**
@@ -108,9 +85,8 @@ class StudentsController extends Controller
     public function show(Request $request, $id)
     {
         $method = $this->method($request->route()->getName());
-        $student = Student::where('id', $id)->first();
-        return view('students.form', compact('student', 'method'));
-        //
+        $category = Category::where('id', $id)->first();
+        return view('categories.form', compact('category', 'method'));
     }
 
     /**
@@ -122,9 +98,8 @@ class StudentsController extends Controller
     public function edit(Request $request, $id)
     {
         $method = $this->method($request->route()->getName());
-        $student = Student::where('id', $id)->first();
-        return view('students.form', compact('student', 'method'));
-        //
+        $category = Category::where('id', $id)->first();
+        return view('categories.form', compact('category', 'method'));
     }
 
     /**
@@ -134,24 +109,15 @@ class StudentsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(StudentRequest $request, $id)
+    public function update(Request $request, $id)
     {
         try {
-            Student::updateOrCreate(
-                ['email' => $request->input('email')],
-                [
-                    'name' => $request->input('name'),
-                    'last_name' => !is_null($request->input('last_name')) ? $request->input('last_name') : 'NA',
-                    'dni' => !is_null($request->input('dni')) ? $request->input('dni') : 'NA',
-                    'phone' => !is_null($request->input('phone')) ? $request->input('phone') : 'NA',
-                    'status' => true
-                ]
-            );
+            Category::updateOrCreate(['description' => $request->input('description')], ['status' => true]);
             DB::commit();
-            return redirect()->route('students.index');
+            return redirect()->route('categories.index');
         } catch (\Throwable $th) {
             DB::rollback();
-            $this->handleExceptionLog('StudentsController.update', $th->getMessage());
+            $this->handleExceptionLog('CategoryController.update', $th->getMessage());
             return redirect()->back();
         }
     }
@@ -168,19 +134,19 @@ class StudentsController extends Controller
     }
 
     /**
-     * Funcion cambio de estatus del estudiante
+     * Funcion cambio de estatus de la categoria
      */
     public function changeStatus(Request $request, $id)
     {
         DB::beginTransaction();
         try {
-            Student::where('id', $id)->update([
+            Category::where('id', $id)->update([
                 'status' => $request->input('status')
             ]);
             DB::commit();
         } catch (\Throwable $th) {
             DB::rollback();
-            $this->handleExceptionLog('StudentsController.changeStatus', $th->getMessage());
+            $this->handleExceptionLog('CategoryController.changeStatus', $th->getMessage());
         }
     }
 }
