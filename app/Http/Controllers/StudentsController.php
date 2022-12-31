@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StudentRequest;
 use App\Models\Student;
+use DB;
 use Illuminate\Http\Request;
 
 class StudentsController extends Controller
@@ -18,13 +19,16 @@ class StudentsController extends Controller
         return view('students.index');
     }
 
-    public function list(Request $request){
+    public function list(Request $request)
+    {
         $draw = $request->draw;
         $data = Student::getAllStudents($request)->get();
         $totalRecords = Student::countAllStudents();
         $datas = [];
         foreach ($data as $key => $value) {
-            $status = $value->status == true ? 'Activado' : 'Desactivado';
+            $checked = $value->status == true ? 'checked' : '';
+            $btn_status = "<div class='text-center'><input id=\"statusCheck{$value->id}\" data-size=\"xs\" type=\"checkbox\" {$checked} data-toggle=\"toggle\" data-width=\"50\" data-on=\"<i class='fas fa-check'></i>\" data-off=\"<i class='fas fa-times'></i>\" data-onstyle=\"primary\" data-offstyle=\"danger\"></div>";
+
             $datas[] = [
                 'nro' => $value->nro,
                 'name' => $value->name,
@@ -32,7 +36,7 @@ class StudentsController extends Controller
                 'dni' => $value->dni,
                 'phone' => $value->phone,
                 'email' => $value->email,
-                'status' => $status,
+                'status' => $btn_status,
                 'actions' => $this->getAction('students', $value->id)
             ];
         }
@@ -47,7 +51,8 @@ class StudentsController extends Controller
         return json_encode($response);
     }
 
-    public function getAction($route, $id){
+    public function getAction($route, $id)
+    {
         $actions = "<a class='btn btn-outline-primary btn-sm mr-2' href='" . route($route . '.show', $id) . "' title='Ver'><i class='fa fa-eye'></i></a>";
         $actions .= "<a class='btn btn-outline-primary btn-sm' href='" . route($route . '.edit', $id) . "' title='Editar'><i class='fa fa-edit'></i></a>";
         return "<div class='text-center d-flex justify-content-around'>" . $actions . "</div>";
@@ -58,9 +63,10 @@ class StudentsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
-        return view('students.create-edit');
+        $method = $this->method($request->route()->getName());
+        return view('students.form', compact('method'));
         //
     }
 
@@ -72,8 +78,25 @@ class StudentsController extends Controller
      */
     public function store(StudentRequest $request)
     {
-        dd($request);
-        //
+        try {
+            Student::updateOrCreate(
+                ['email' => $request->input('email')],
+                [
+                    'name' => $request->input('name'),
+                    'last_name' => !is_null($request->input('last_name')) ? $request->input('last_name') : 'NA',
+                    'dni' => !is_null($request->input('dni')) ? $request->input('dni') : 'NA',
+                    'phone' => !is_null($request->input('phone')) ? $request->input('phone') : 'NA',
+                    'status' => true
+                ]
+            );
+            DB::commit();
+            return redirect()->route('students.index');
+        } catch (\Throwable $th) {
+            DB::rollback();
+            $this->handleExceptionLog('StudentsController.store', $th->getMessage());
+            return redirect()->back();
+        }
+
     }
 
     /**
@@ -82,9 +105,11 @@ class StudentsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Request $request, $id)
     {
-        return view('students.create-edit');
+        $method = $this->method($request->route()->getName());
+        $student = Student::where('id', $id)->first();
+        return view('students.form', compact('student', 'method'));
         //
     }
 
@@ -94,9 +119,11 @@ class StudentsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Request $request, $id)
     {
-        return view('students.create-edit');
+        $method = $this->method($request->route()->getName());
+        $student = Student::where('id', $id)->first();
+        return view('students.form', compact('student', 'method'));
         //
     }
 
@@ -107,9 +134,26 @@ class StudentsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(StudentRequest $request, $id)
     {
-        //
+        try {
+            Student::updateOrCreate(
+                ['email' => $request->input('email')],
+                [
+                    'name' => $request->input('name'),
+                    'last_name' => !is_null($request->input('last_name')) ? $request->input('last_name') : 'NA',
+                    'dni' => !is_null($request->input('dni')) ? $request->input('dni') : 'NA',
+                    'phone' => !is_null($request->input('phone')) ? $request->input('phone') : 'NA',
+                    'status' => true
+                ]
+            );
+            DB::commit();
+            return redirect()->route('students.index');
+        } catch (\Throwable $th) {
+            DB::rollback();
+            $this->handleExceptionLog('StudentsController.update', $th->getMessage());
+            return redirect()->back();
+        }
     }
 
     /**
@@ -121,5 +165,22 @@ class StudentsController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    /**
+     * Funcion cambio de estatus del estudiante
+     */
+    public function changeStatus(Request $request, $id)
+    {
+        DB::beginTransaction();
+        try {
+            Student::where('id', $id)->update([
+                'status' => $request->input('status')
+            ]);
+            DB::commit();
+        } catch (\Throwable $th) {
+            DB::rollback();
+            $this->handleExceptionLog('StudentsController.changeStatus', $th->getMessage());
+        }
     }
 }

@@ -36,6 +36,22 @@
             studentsList();
         });
 
+        $(document).one('click', '.toggle-group', function() {
+            $('input[type=checkbox]').on('change', function(event) {
+                $.ajax({
+                    type: "PATCH",
+                    url: "/students/changeStatus/" + $(this).prop("id").replace("statusCheck",""),
+                    data: {
+                        status: $(this).is(':checked') == true ? true : false,
+                        _token: '{{ csrf_token() }}',
+                    },
+                    // success: async function(response) {
+                    //     location.href = "/students";
+                    // },
+                });
+            });
+        });
+
         function studentsList() {
             var token = $("input[name~='_token']").val();
             $("#dataTable").DataTable({
@@ -70,13 +86,16 @@
                     {
                         data: 'last_name',
                         orderable: false
-                    }, {
+                    },
+                    {
                         data: 'dni',
                         orderable: false
-                    }, {
+                    },
+                    {
                         data: 'phone',
                         orderable: false
-                    }, {
+                    },
+                    {
                         data: 'email',
                         orderable: false
                     },
@@ -89,6 +108,9 @@
                         orderable: false
                     },
                 ],
+                "fnDrawCallback": function() {
+                    $('input[type=checkbox][data-toggle^=toggle]').bootstrapToggle()
+                },
             });
         }
     </script>

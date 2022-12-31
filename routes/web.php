@@ -28,6 +28,8 @@ Route::group(['middleware' => ['auth']], function () {
             Route::post('/students/store', 'store')->name('store');
             Route::get('/students/show/{id}', 'show')->name('show');
             Route::get('/students/edit/{id}', 'edit')->name('edit');
+            Route::post('/students/update/{id}', 'update')->name('update');
+            Route::patch('/students/changeStatus/{id}', 'changeStatus')->name('changeStatus');
         });
     });
 });

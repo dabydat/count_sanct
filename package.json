@@ -16,6 +16,7 @@
         "vite": "^4.0.0"
     },
     "dependencies": {
+        "bootstrap4-toggle": "^3.6.1",
         "datatable": "^2.0.2",
         "datatables": "^1.10.18",
         "datatables.net": "^1.13.1",

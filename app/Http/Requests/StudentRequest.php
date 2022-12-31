@@ -25,7 +25,11 @@ class StudentRequest extends FormRequest
     {
         return [
             "name"  => "required|min:5",
-            "email"  => "required",
+            "last_name"  => "nullable|min:5",
+            "email"  => "required|unique:students|regex:/^([a-z0-9\+_\-]+)(\.[a-z0-9\+_\-]+)*@([a-z0-9\-]+\.)+[a-z]{2,6}$/ix",
+            "dni"  => "nullable|int|min:5",
+            "phone"  => "nullable|min:10",
+
         ];
     }
 
@@ -38,7 +42,12 @@ class StudentRequest extends FormRequest
     {
         return [
             "name.required" => "El nombre del estudiante es requerido.",
+            "name.min" => "El nombre del estudiante minimo de 5 caracteres.",
             "email.required" => "El correo del estudiante es requerido.",
+            "email.unique" => "Este correo ya existe, por favor intente nuevamente.",
+            "email.regex" => "No cumple con la forma de un correo, intente nuevamente.",
+            "dni.int" => "La cedula debe ser un numero.",
+            "phone.min" => "El numero no puede ser menor de diez digitos.",
         ];
     }
 }
