@@ -164,9 +164,7 @@ class StudentController extends Controller
     {
         DB::beginTransaction();
         try {
-            Student::where('id', $id)->update([
-                'status' => $request->input('status')
-            ]);
+            Student::where('id', $id)->update(['status' => $request->input('status')]);
             DB::commit();
         } catch (\Throwable $th) {
             DB::rollback();

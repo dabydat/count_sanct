@@ -112,7 +112,7 @@ class CategoryController extends Controller
     public function update(Request $request, $id)
     {
         try {
-            Category::updateOrCreate(['description' => $request->input('description')], ['status' => true]);
+            Category::where('id', $id)->update(['description' => $request->input('description')], ['status' => true]);
             DB::commit();
             return redirect()->route('categories.index');
         } catch (\Throwable $th) {
@@ -140,9 +140,7 @@ class CategoryController extends Controller
     {
         DB::beginTransaction();
         try {
-            Category::where('id', $id)->update([
-                'status' => $request->input('status')
-            ]);
+            Category::where('id', $id)->update(['status' => $request->input('status')]);
             DB::commit();
         } catch (\Throwable $th) {
             DB::rollback();
