@@ -6,16 +6,16 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 
-class Category extends Model
+class Period extends Model
 {
     use HasFactory;
-    protected $table = 'categories';
+    protected $table = 'periods';
     protected $primaryKey = 'id';
     protected $dates = ['created_at', 'updated_at', 'deleted_at'];
     protected $fillable = ['description', 'status'];
 
     public static function getAllCategories($request){
-        $query = Category::select(
+        $query = Period::select(
             DB::raw('row_number() OVER (ORDER BY description asc) AS nro'),
             'id',
             'description',
@@ -29,10 +29,6 @@ class Category extends Model
     }
 
     public static function countAllCategories(){
-        return Category::all()->count();
+        return Period::all()->count();
     }
-
-    // public function contributions(){
-    //     return $this->belongsTo(Contribution::class);
-    // }
 }

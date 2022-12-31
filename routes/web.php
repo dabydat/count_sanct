@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ContributionController;
 use App\Http\Controllers\StudentController;
 use Illuminate\Support\Facades\Route;
 
@@ -44,6 +45,19 @@ Route::group(['middleware' => ['auth']], function () {
             Route::get('/categories/edit/{id}', 'edit')->name('edit');
             Route::post('/categories/update/{id}', 'update')->name('update');
             Route::patch('/categories/changeStatus/{id}', 'changeStatus')->name('changeStatus');
+        });
+    });
+
+    Route::controller(ContributionController::class)->group(function () {
+        Route::name('contributions.')->group(function () {
+            Route::get('/contributions', 'index')->name('index');
+            Route::post('/contributionsList', 'list')->name('list');
+            Route::get('/contributions/create', 'create')->name('create');
+            Route::post('/contributions/store', 'store')->name('store');
+            Route::get('/contributions/show/{id}', 'show')->name('show');
+            Route::get('/contributions/edit/{id}', 'edit')->name('edit');
+            Route::post('/contributions/update/{id}', 'update')->name('update');
+            Route::patch('/contributions/changeStatus/{id}', 'changeStatus')->name('changeStatus');
         });
     });
 });

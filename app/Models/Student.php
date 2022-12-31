@@ -35,4 +35,9 @@ class Student extends Model
     public static function countAllStudents(){
         return Student::all()->count();
     }
+
+    public function contributions(){
+        return $this->hasMany(Contribution::class);
+    }
 }
+
