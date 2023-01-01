@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use App\Models\Contribution;
+use App\Models\Period;
 use App\Models\Student;
 use Illuminate\Http\Request;
 
@@ -58,7 +59,8 @@ class ContributionController extends Controller
         $method = $this->method($request->route()->getName());
         $students = Student::where('status', true)->get();
         $categories = Category::where('status', true)->get();
-        return view('contributions.form', compact('method', 'students', 'categories'));
+        $periods = Period::where('status', true)->get();
+        return view('contributions.form', compact('method', 'students', 'categories', 'periods'));
     }
 
     /**

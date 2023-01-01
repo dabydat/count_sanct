@@ -19,9 +19,8 @@
     <script src="{{ asset('fontawesome/js/all.min.js') }}" type="text/javascript"></script>
     <script src="{{ asset('js/bootstrap4-toggle.min.js') }}" type="text/javascript"></script>
     <script src="{{ asset('vendor/jsvalidation/js/jsvalidation.js') }}" type="text/javascript"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"
-        integrity="sha512-uto9mlQzrs59VwILcLiRYeLKPPbS/bT71da/OEBYEwcdNUk8jYIy+D176RYoop1Da+f9mvkYrmj5MCLZWEtQuA=="
-        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="{{ asset('js/datepicker.bootstrap4.min.js') }}"></script>
+    <script src="{{ asset('js/datepicker.bootstrap4.es-language.js') }}"></script>
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
@@ -31,8 +30,7 @@
     <link rel="stylesheet" src="{{ asset('vendor/datatables/css/dataTables.bootstrap4.min.css') }}" />
     <link rel="stylesheet" type="text/css" href="{{ asset('fontawesome/css/all.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('css/bootstrap4-toggle.min.css') }}">
-    <link href="https://code.jquery.com/ui/1.12.1/themes/ui-lightness/jquery-ui.css" rel="stylesheet" />
-
+    <link rel="stylesheet" href="{{ asset('css/datepicker.bootstrap4.min.css') }}" />
 </head>
 
 <body>

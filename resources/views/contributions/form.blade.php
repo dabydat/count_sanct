@@ -59,7 +59,7 @@
                         <div class="input-group">
                             <div class="input-group-prepend">
                                 <span class="input-group-text">
-                                    <i class="far fa-calendar-alt"></i>
+                                    <i class="far fa-calendar-alt" style="font-size: 23px"></i>
                                 </span>
                             </div>
                             <input type="text" class="contribution_date form-control float-right contribution_date"
@@ -85,12 +85,18 @@
                 <div class="row mb-3">
                     <div class="form-group col-md-6">
                         <label for="period">Periodo</label>
-                        <input class="form-control" type="text" name="period" id="period"
-                            placeholder="Ingrese el nombre..." value="" {{-- {{ isset($category) ? $category->period : old('period') }} --}}
+                        <select class="form-control form-select" name="periods" id="periods">
+                            <option value="">Seleccione una opción...</option>
+                            @foreach ($periods as $period)
+                                <option value="{{ $period->id }}">{{ $period->description }}</option>
+                            @endforeach
+                        </select>
+                        {{-- <input class="form-control" type="text" name="period" id="period"
+                            placeholder="Ingrese el nombre..." value="" {{ isset($category) ? $category->period : old('period') }}
                             {{ $method == 'show' ? 'disabled' : '' }}>
                         @error('period')
                             <span class="text-danger">{{ $message }}</span>
-                        @enderror
+                        @enderror --}}
                     </div>
                     <div class="form-group col-md-6">
                         <label for="description">Descripcion</label>
@@ -120,7 +126,7 @@
             clearBtn: true,
             language: "es",
             orientation: "bottom auto",
-            autoclose: true
+            autoclose: true,
         });
     </script>
 @endsection
