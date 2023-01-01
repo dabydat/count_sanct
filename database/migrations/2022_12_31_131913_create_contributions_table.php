@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('student_id')->constrained()->cascadeOnDelete();
             $table->foreignId('category_id')->constrained()->cascadeOnDelete();
+            $table->string('contribution_date');
             $table->decimal('amount', $precision = 8, $scale = 2);
             $table->text('description')->nullable();
             $table->boolean('status')->default(true);

@@ -7,15 +7,16 @@
                 <h1>Aportes</h1>
             </div>
             <div class="col-2">
-                <a href="#" class="btn btn-outline-primary">Nuevo Aporte</a>
+                <a href="{{ route('contributions.create') }}" class="btn btn-outline-primary">Nuevo Aporte</a>
             </div>
         </div>
         <div class="row">
             <div class="col-sm-12">
-                <table id="dataTable" class="table table-bordered table-striped text-center">
+                <table id="dataTable" class="table table-bordered table-striped text-center" style="border-color: black">
                     <thead>
                         <tr class="text-center">
                             <th style="width:20px">N°</th>
+                            <th>Dia de aporte</th>
                             <th>Estudiante</th>
                             <th>Categoria</th>
                             <th>Aporte</th>
@@ -61,6 +62,10 @@
                 },
                 columns: [{
                         data: 'nro',
+                        orderable: false
+                    },
+                    {
+                        data: 'contribution_date',
                         orderable: false
                     },
                     {

@@ -27,7 +27,8 @@ class Contribution extends Model
             'category_id',
             'amount',
             'description',
-            'period_id'
+            'period_id',
+            'contribution_date'
         );
 
         if ($request->start <> "") $query = $query->skip($request->start);
@@ -48,7 +49,8 @@ class Contribution extends Model
                 'category_id',
                 'amount',
                 'description',
-                'period_id'
+                'period_id',
+                'contribution_date'
             )->count();
 
         return $query;

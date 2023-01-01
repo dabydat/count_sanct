@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use App\Models\Contribution;
+use App\Models\Student;
 use Illuminate\Http\Request;
 
 class ContributionController extends Controller
@@ -26,6 +28,7 @@ class ContributionController extends Controller
         foreach ($data as $key => $value) {
             $datas[] = [
                 'nro' => $value->nro,
+                'contribution_date' => $value->contribution_date,
                 'student' => $value->student->name . ' ' . $value->student->last_name,
                 'category' => $value->category->description,
                 'amount' => $value->amount,
@@ -50,9 +53,12 @@ class ContributionController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
-        //
+        $method = $this->method($request->route()->getName());
+        $students = Student::where('status', true)->get();
+        $categories = Category::where('status', true)->get();
+        return view('contributions.form', compact('method', 'students', 'categories'));
     }
 
     /**
