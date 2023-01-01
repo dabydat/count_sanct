@@ -10,7 +10,7 @@
                 <a href="{{ route('contributions.create') }}" class="btn btn-outline-primary">Nuevo Aporte</a>
             </div>
         </div>
-        <div class="row">
+        <div class="row mb-5">
             <div class="col-sm-12">
                 <table id="dataTable" class="table table-bordered table-striped text-center" style="border-color: black">
                     <thead>
@@ -28,12 +28,26 @@
                 </table>
             </div>
         </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <table id="contributionsPerPeriods" class="table table-bordered table-striped text-center" style="border-color: black">
+                    <thead>
+                        <tr class="text-center">
+                            <th style="width:20px">N°</th>
+                            <th>Periodo</th>
+                            <th>Monto Total</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
     </div>
 @endsection
 @section('js')
     <script type="text/javascript">
         $(document).ready(function() {
             contributionsList();
+            contributionsPerPeriodsList();
         });
 
         function contributionsList() {
@@ -92,10 +106,46 @@
                         data: 'actions',
                         orderable: false
                     },
-                ],
-                "fnDrawCallback": function() {
-                    $('input[type=checkbox][data-toggle^=toggle]').bootstrapToggle()
+                ]
+            });
+        }
+        function contributionsPerPeriodsList() {
+            var token = $("input[name~='_token']").val();
+            $("#contributionsPerPeriods").DataTable({
+                serverSide: true,
+                processing: false,
+                destroy: true,
+                responsive: true,
+                autoWidth: false,
+                searching: false,
+                info: true,
+                pagingType: "full_numbers",
+                pageLength: 10,
+                bLengthChange: false,
+                language: {
+                    "url": "../vendor/datatables/es/es.json",
+                    // "processing": '<i class="fa fa-spinner fa-spin fa-2x fa-fw"></i>'
                 },
+                ajax: {
+                    url: "{{ route('contributions.contributionsPerPeriodsList') }}",
+                    type: "POST",
+                    data: {
+                        "_token": token,
+                    },
+                },
+                columns: [{
+                        data: 'nro',
+                        orderable: false
+                    },
+                    {
+                        data: 'description',
+                        orderable: false
+                    },
+                    {
+                        data: 'total_amount',
+                        orderable: false
+                    }
+                ],
             });
         }
     </script>

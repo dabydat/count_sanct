@@ -12,7 +12,7 @@ class Contribution extends Model
     protected $table = 'contributions';
     protected $primaryKey = 'id';
     protected $dates = ['created_at', 'updated_at', 'deleted_at'];
-    protected $fillable = ['student_id', 'category_id', 'period_id', 'amount', 'description', 'status'];
+    protected $fillable = ['student_id', 'category_id', 'period_id', 'amount', 'description', 'contribution_date', 'status'];
 
 
     public static function getAllContributions($request){
@@ -52,6 +52,21 @@ class Contribution extends Model
                 'period_id',
                 'contribution_date'
             )->count();
+
+        return $query;
+    }
+
+    public static function totalAmounPerPeriod($request){
+        $query = Contribution::select(
+            DB::raw('row_number() OVER (ORDER BY periods.id asc) AS nro'),
+            'periods.description',
+            DB::raw('SUM(amount) as total_amount')
+        )
+            ->join('periods', 'periods.id', 'contributions.period_id')
+            ->groupBy('periods.id');
+
+        if ($request->start <> "") $query = $query->skip($request->start);
+        if ($request->length <> "") $query = $query->take($request->length);
 
         return $query;
     }

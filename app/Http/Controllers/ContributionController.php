@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ContributionRequest;
 use App\Models\Category;
 use App\Models\Contribution;
 use App\Models\Period;
 use App\Models\Student;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ContributionController extends Controller
 {
@@ -49,6 +51,30 @@ class ContributionController extends Controller
         return json_encode($response);
     }
 
+    public function contributionsPerPeriodsList(Request $request)
+    {
+        $draw = $request->draw;
+        $data = Contribution::totalAmounPerPeriod($request)->get();
+        $totalRecords = $data->count();
+        $datas = [];
+        foreach ($data as $key => $value) {
+            $datas[] = [
+                'nro' => $value->nro,
+                'description' => $value->description,
+                'total_amount' => $value->total_amount,
+            ];
+        }
+
+        $response = array(
+            "draw" => intval($draw),
+            "iTotalRecords" => $totalRecords,
+            "iTotalDisplayRecords" => $totalRecords,
+            "aaData" => $datas
+        );
+
+        return json_encode($response);
+    }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -69,9 +95,24 @@ class ContributionController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(ContributionRequest $request)
     {
-        //
+        try {
+            Contribution::create([
+                'student_id' => $request->input('students'),
+                'category_id' => $request->input('categories'),
+                'period_id' => $request->input('periods'),
+                'amount' => $request->input('amount'),
+                'description' => $request->input('description'),
+                'contribution_date' => $request->input('contribution_date')
+            ]);
+            DB::commit();
+            return redirect()->route('contributions.index');
+        } catch (\Throwable $th) {
+            DB::rollback();
+            $this->handleExceptionLog('ContributionController.store', $th->getMessage());
+            return redirect()->back();
+        }
     }
 
     /**
@@ -91,9 +132,14 @@ class ContributionController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Request $request, $id)
     {
-        //
+        $method = $this->method($request->route()->getName());
+        $contribution = Contribution::where('id', $id)->first();
+        $students = Student::where('status', true)->get();
+        $categories = Category::where('status', true)->get();
+        $periods = Period::where('status', true)->get();
+        return view('contributions.form', compact('method', 'students', 'categories', 'periods', 'contribution'));
     }
 
     /**
@@ -105,7 +151,22 @@ class ContributionController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        try {
+            Contribution::where('id', $id)->update([
+                'student_id' => $request->input('students'),
+                'category_id' => $request->input('categories'),
+                'period_id' => $request->input('periods'),
+                'amount' => $request->input('amount'),
+                'description' => $request->input('description'),
+                'contribution_date' => $request->input('contribution_date')
+            ]);
+            DB::commit();
+            return redirect()->route('contributions.index');
+        } catch (\Throwable $th) {
+            DB::rollback();
+            $this->handleExceptionLog('ContributionController.store', $th->getMessage());
+            return redirect()->back();
+        }
     }
 
     /**
