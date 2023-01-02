@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ContributionController;
+use App\Http\Controllers\PeriodController;
 use App\Http\Controllers\StudentController;
 use Illuminate\Support\Facades\Route;
 
@@ -58,7 +59,18 @@ Route::group(['middleware' => ['auth']], function () {
             Route::get('/contributions/show/{id}', 'show')->name('show');
             Route::get('/contributions/edit/{id}', 'edit')->name('edit');
             Route::post('/contributions/update/{id}', 'update')->name('update');
-            Route::patch('/contributions/changeStatus/{id}', 'changeStatus')->name('changeStatus');
+        });
+    });
+
+    Route::controller(PeriodController::class)->group(function () {
+        Route::name('periods.')->group(function () {
+            Route::get('/periods', 'index')->name('index');
+            Route::post('/periodsList', 'list')->name('list');
+            Route::get('/periods/create', 'create')->name('create');
+            Route::post('/periods/store', 'store')->name('store');
+            Route::get('/periods/show/{id}', 'show')->name('show');
+            Route::get('/periods/edit/{id}', 'edit')->name('edit');
+            Route::post('/periods/update/{id}', 'update')->name('update');
         });
     });
 });

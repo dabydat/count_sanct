@@ -14,12 +14,11 @@ class Period extends Model
     protected $dates = ['created_at', 'updated_at', 'deleted_at'];
     protected $fillable = ['description', 'status'];
 
-    public static function getAllCategories($request){
+    public static function getAllPeriods($request){
         $query = Period::select(
-            DB::raw('row_number() OVER (ORDER BY description asc) AS nro'),
+            DB::raw('row_number() OVER (ORDER BY id asc) AS nro'),
             'id',
             'description',
-            'status'
         );
 
         if ($request->start <> "") $query = $query->skip($request->start);
@@ -28,7 +27,7 @@ class Period extends Model
         return $query;
     }
 
-    public static function countAllCategories(){
+    public static function countAllPeriods(){
         return Period::all()->count();
     }
 }
