@@ -21,7 +21,7 @@ class Contribution extends Model
             ['category' => function ($query) {$query->where('status', true);}],
             ['period' => function ($query) {$query->where('status', true);}]
         )->select(
-            DB::raw('row_number() OVER (ORDER BY period_id asc) AS nro'),
+            DB::raw('row_number() OVER (ORDER BY contribution_date asc) AS nro'),
             'id',
             'student_id',
             'category_id',
@@ -30,6 +30,8 @@ class Contribution extends Model
             'period_id',
             'contribution_date'
         );
+
+        // $query = $query->orderBy('contribution_date', 'asc')->orderBy('period_id', 'desc');
 
         if ($request->start <> "") $query = $query->skip($request->start);
         if ($request->length <> "") $query = $query->take($request->length);
@@ -42,16 +44,7 @@ class Contribution extends Model
             ['student' => function ($query) {$query->where('status', true);}],
             ['category' => function ($query) {$query->where('status', true);}],
             ['period' => function ($query) {$query->where('status', true);}]
-        )->select(
-                DB::raw('row_number() OVER (ORDER BY id asc) AS nro'),
-                'id',
-                'student_id',
-                'category_id',
-                'amount',
-                'description',
-                'period_id',
-                'contribution_date'
-            )->count();
+        )->select('*')->count();
 
         return $query;
     }

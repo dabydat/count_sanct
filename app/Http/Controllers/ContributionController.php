@@ -121,9 +121,15 @@ class ContributionController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Request $request, $id)
     {
-        //
+        $method = $this->method($request->route()->getName());
+        $contribution = Contribution::with(
+            ['student' => function ($query) {$query->where('status', true);}],
+            ['category' => function ($query) {$query->where('status', true);}],
+            ['period' => function ($query) {$query->where('status', true);}]
+        )->where('id', $id)->first();
+        return view('contributions.form', compact('method', 'contribution'));
     }
 
     /**

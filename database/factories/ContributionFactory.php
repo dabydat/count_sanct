@@ -24,7 +24,7 @@ class ContributionFactory extends Factory
             'category_id' => $this->getRandomCategory(),
             'period_id' => $this->getRandomPeriod(),
             'contribution_date' => $this->faker->date($format = 'd-m-Y', $max = 'now'),
-            'amount' => $this->faker->randomFloat($nbMaxDecimals = 2, $min = 0, $max = 100000),
+            'amount' => $this->faker->randomFloat($nbMaxDecimals = 2, $min = 0, $max = 1000),
             'description' => $this->faker->text($max = 120),
             'created_at' => $this->faker->dateTime()
         ];
