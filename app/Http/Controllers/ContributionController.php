@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\ContributionExport;
 use App\Http\Requests\ContributionRequest;
 use App\Models\Category;
 use App\Models\Contribution;
@@ -9,6 +10,7 @@ use App\Models\Period;
 use App\Models\Student;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ContributionController extends Controller
 {
@@ -125,9 +127,12 @@ class ContributionController extends Controller
     {
         $method = $this->method($request->route()->getName());
         $contribution = Contribution::with(
-            ['student' => function ($query) {$query->where('status', true);}],
-            ['category' => function ($query) {$query->where('status', true);}],
-            ['period' => function ($query) {$query->where('status', true);}]
+            ['student' => function ($query) {
+                $query->where('status', true); }],
+            ['category' => function ($query) {
+                $query->where('status', true); }],
+            ['period' => function ($query) {
+                $query->where('status', true); }]
         )->where('id', $id)->first();
         return view('contributions.form', compact('method', 'contribution'));
     }
@@ -184,5 +189,10 @@ class ContributionController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function export()
+    {
+        return Excel::download(new ContributionExport, 'aportes.xlsx');
     }
 }

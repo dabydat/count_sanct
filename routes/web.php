@@ -59,6 +59,7 @@ Route::group(['middleware' => ['auth']], function () {
             Route::get('/contributions/show/{id}', 'show')->name('show');
             Route::get('/contributions/edit/{id}', 'edit')->name('edit');
             Route::post('/contributions/update/{id}', 'update')->name('update');
+            Route::get('/contributions/export/', 'export')->name('export');
         });
     });
 

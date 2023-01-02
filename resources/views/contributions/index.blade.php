@@ -9,10 +9,13 @@
             <div class="col-2">
                 <a href="{{ route('contributions.create') }}" class="btn btn-outline-primary">Nuevo Aporte</a>
             </div>
+            <div class="col-2">
+                <a href="{{ route('contributions.export') }}" class="btn btn-outline-success">Exportar Datos</a>
+            </div>
         </div>
         <div class="row mb-5">
             <div class="col-sm-12">
-                <table id="dataTable" class="table table-bordered table-striped text-center" style="border-color: black">
+                <table id="dataTable" class="table table-bordered table-striped text-center" >
                     <thead>
                         <tr class="text-center">
                             <th style="width:20px">N°</th>
@@ -30,7 +33,7 @@
         </div>
         <div class="row">
             <div class="col-sm-12">
-                <table id="contributionsPerPeriods" class="table table-bordered table-striped text-center" style="border-color: black">
+                <table id="contributionsPerPeriods" class="table table-bordered table-striped text-center">
                     <thead>
                         <tr class="text-center">
                             <th style="width:20px">N°</th>
