@@ -112,6 +112,7 @@
                 ]
             });
         }
+
         function contributionsPerPeriodsList() {
             var token = $("input[name~='_token']").val();
             $("#contributionsPerPeriods").DataTable({
@@ -151,5 +152,7 @@
                 ],
             });
         }
+
+        
     </script>
 @endsection
