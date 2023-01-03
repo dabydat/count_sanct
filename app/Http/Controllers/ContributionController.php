@@ -57,13 +57,38 @@ class ContributionController extends Controller
     {
         $draw = $request->draw;
         $data = Contribution::totalAmounPerPeriod($request)->get();
-        $totalRecords = $data->count();
+        $totalRecords = Contribution::totalAmounPerPeriodCount();
         $datas = [];
         foreach ($data as $key => $value) {
             $datas[] = [
                 'nro' => $value->nro,
                 'description' => $value->description,
                 'total_amount' => $value->total_amount,
+            ];
+        }
+
+        $response = array(
+            "draw" => intval($draw),
+            "iTotalRecords" => $totalRecords,
+            "iTotalDisplayRecords" => $totalRecords,
+            "aaData" => $datas
+        );
+
+        return json_encode($response);
+    }
+
+    public function contributionsPerStudentPerPeriodsList(Request $request)
+    {
+        $draw = $request->draw;
+        $data = Contribution::totalAmounPerPerStudentPeriod($request)->get();
+        $totalRecords = Contribution::totalAmounPerPerStudentPeriodCount();
+        $datas = [];
+        foreach ($data as $key => $value) {
+            $datas[] = [
+                'nro' => $value->nro,
+                'student_full_name' => $value->student_full_name,
+                'period' => $value->period,
+                'total_amount_student' => $value->total_amount_student,
             ];
         }
 

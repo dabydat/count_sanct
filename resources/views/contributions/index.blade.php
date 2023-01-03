@@ -32,6 +32,26 @@
             </div>
         </div>
         <div class="row">
+            <div class="col-8">
+                <h1>Aporte total del estudiante por periodo</h1>
+            </div>
+            <div class="col-sm-12">
+                <table id="contributionsPerStudentPerPeriodsList" class="table table-bordered table-striped text-center">
+                    <thead>
+                        <tr class="text-center">
+                            <th style="width:20px">N°</th>
+                            <th>Estudiante</th>
+                            <th>Periodo</th>
+                            <th>Aporte Total Por Periodo</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-8">
+                <h1>Monto total efectuado por periodo</h1>
+            </div>
             <div class="col-sm-12">
                 <table id="contributionsPerPeriods" class="table table-bordered table-striped text-center">
                     <thead>
@@ -52,6 +72,7 @@
         $(document).ready(function() {
             contributionsList();
             contributionsPerPeriodsList();
+            contributionsPerStudentPerPeriodsList();
         });
 
         function contributionsList() {
@@ -154,6 +175,50 @@
             });
         }
 
+        function contributionsPerStudentPerPeriodsList() {
+            var token = $("input[name~='_token']").val();
+            $("#contributionsPerStudentPerPeriodsList").DataTable({
+                serverSide: true,
+                processing: false,
+                destroy: true,
+                responsive: true,
+                autoWidth: false,
+                searching: false,
+                info: true,
+                pagingType: "full_numbers",
+                pageLength: 10,
+                bLengthChange: false,
+                language: {
+                    "url": "../vendor/datatables/es/es.json",
+                    // "processing": '<i class="fa fa-spinner fa-spin fa-2x fa-fw"></i>'
+                },
+                ajax: {
+                    url: "{{ route('contributions.contributionsPerStudentPerPeriodsList') }}",
+                    type: "POST",
+                    data: {
+                        "_token": token,
+                    },
+                },
+                columns: [{
+                        data: 'nro',
+                        orderable: false
+                    },
+                    {
+                        data: 'student_full_name',
+                        orderable: false
+                    },
+                    {
+                        data: 'period',
+                        orderable: false
+                    },
+                    {
+                        data: 'total_amount_student',
+                        orderable: false
+                    }
+                ],
+            });
+        }
+
         function getPeriods() {
             let periodSelect = document.getElementById('periods');
             let period_id = document.getElementById('periods').value;
@@ -203,7 +268,5 @@
         $('#cerrarModal').on('click', function() {
             $('#modalExportData').modal('toggle');
         })
-
-
     </script>
 @endsection

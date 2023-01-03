@@ -64,6 +64,49 @@ class Contribution extends Model
         return $query;
     }
 
+    public static function totalAmounPerPeriodCount(){
+        return Contribution::select(
+            DB::raw('row_number() OVER (ORDER BY periods.id asc) AS nro'),
+            'periods.description',
+            DB::raw('SUM(amount) as total_amount')
+        )
+            ->join('periods', 'periods.id', 'contributions.period_id')
+            ->groupBy('periods.id')->get()->count();
+    }
+
+    public static function totalAmounPerPerStudentPeriod($request){
+
+        $query = Contribution::select(
+            DB::raw('row_number() OVER (ORDER BY periods.description asc) AS nro'),
+            DB::raw('array_to_string(ARRAY[students.name, students.last_name], \' \'::text) AS student_full_name'),
+            'periods.description as period',
+            DB::raw('SUM(amount) as total_amount_student')
+        )
+            ->join('periods', 'periods.id', 'contributions.period_id')
+            ->join('students', 'students.id', 'contributions.student_id')
+            ->groupBy('periods.id','students.id')
+            ->orderBy('periods.description', 'ASC');
+
+        if ($request->start <> "") $query = $query->skip($request->start);
+        if ($request->length <> "") $query = $query->take($request->length);
+
+        return $query;
+    }
+
+    public static function totalAmounPerPerStudentPeriodCount()
+    {
+        return Contribution::select(
+            DB::raw('row_number() OVER (ORDER BY periods.description asc) AS nro'),
+            DB::raw('array_to_string(ARRAY[students.name, students.last_name], \' \'::text) AS student_full_name'),
+            'periods.description as period',
+            DB::raw('SUM(amount) as total_amount_student')
+        )
+            ->join('periods', 'periods.id', 'contributions.period_id')
+            ->join('students', 'students.id', 'contributions.student_id')
+            ->groupBy('periods.id', 'students.id')
+            ->orderBy('periods.description', 'ASC')->get()->count();
+    }
+
     public static function exportAllContributions($period_id){
         // return Contribution::select(
         //     'contributions.contribution_date as dia_aporte',
