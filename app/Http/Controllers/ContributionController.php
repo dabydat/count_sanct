@@ -127,12 +127,21 @@ class ContributionController extends Controller
     {
         $method = $this->method($request->route()->getName());
         $contribution = Contribution::with(
-            ['student' => function ($query) {
-                $query->where('status', true); }],
-            ['category' => function ($query) {
-                $query->where('status', true); }],
-            ['period' => function ($query) {
-                $query->where('status', true); }]
+            [
+                'student' => function ($query) {
+                    $query->where('status', true);
+                }
+            ],
+            [
+                'category' => function ($query) {
+                    $query->where('status', true);
+                }
+            ],
+            [
+                'period' => function ($query) {
+                    $query->where('status', true);
+                }
+            ]
         )->where('id', $id)->first();
         return view('contributions.form', compact('method', 'contribution'));
     }
@@ -191,8 +200,15 @@ class ContributionController extends Controller
         //
     }
 
-    public function export()
+    public function export(Request $request)
     {
-        return Excel::download(new ContributionExport, 'aportes.xlsx');
+        $period_id = $request->input('period_id');
+        $exportedData = Excel::download(new ContributionExport($period_id), '.xlsx');
+
+        $response = [
+            'name' => "aportes", 
+            'file' => "data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64," . base64_encode($exportedData) //mime type of used format
+        ];
+        return response()->json($response);
     }
 }

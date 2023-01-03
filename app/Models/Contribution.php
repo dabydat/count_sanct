@@ -64,7 +64,7 @@ class Contribution extends Model
         return $query;
     }
 
-    public static function exportAllContributions(){
+    public static function exportAllContributions($period_id){
         // return Contribution::select(
         //     'contributions.contribution_date as dia_aporte',
         //     DB::raw('CONCAT(students.name, \' \',students.last_name) AS estudiante_nombre'),
@@ -77,8 +77,7 @@ class Contribution extends Model
         // ->join('periods', 'period_id', 'periods.id')
         // ->orderBy('contribution_date')
         // ->get();
-
-        return Contribution::with(['student'],['category'],['period'])->select('*')->orderBy('contribution_date')->orderBy('contributions.category_id')->get();
+        return Contribution::with(['student'],['category'],['period'])->select('*')->where('period_id', $period_id)->orderBy('contribution_date')->orderBy('contributions.category_id')->get();
     }
 
     public function student(){

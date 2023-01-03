@@ -10,12 +10,12 @@
                 <a href="{{ route('contributions.create') }}" class="btn btn-outline-primary">Nuevo Aporte</a>
             </div>
             <div class="col-2">
-                <a href="{{ route('contributions.export') }}" class="btn btn-outline-success">Exportar Datos</a>
+                <button id="btnExportData" class="btn btn-outline-success">Exportar Datos</button>
             </div>
         </div>
         <div class="row mb-5">
             <div class="col-sm-12">
-                <table id="dataTable" class="table table-bordered table-striped text-center" >
+                <table id="dataTable" class="table table-bordered table-striped text-center">
                     <thead>
                         <tr class="text-center">
                             <th style="width:20px">N°</th>
@@ -45,6 +45,7 @@
             </div>
         </div>
     </div>
+    @include('contributions.modal.export_data')
 @endsection
 @section('js')
     <script type="text/javascript">
@@ -153,6 +154,79 @@
             });
         }
 
-        
+        function getPeriods() {
+            let periodSelect = document.getElementById('periods');
+            let period_id = document.getElementById('periods').value;
+
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': "{{ csrf_token() }}"
+                }
+            });
+            $.ajax({
+                method: "GET",
+                url: "{{ route('periods.getPeriods') }}",
+                dataType: 'json',
+                success: (res) => {
+                    $(periodSelect).empty();
+                    $(periodSelect).append('<option value="" selected>Seleccione una opción...</option>')
+                    if (res.code === 3 && res.type === 'success') {
+                        res.data.map(data => {
+                            periodSelect.options[periodSelect.options.length] = new Option(data
+                                .description, data.id);
+                        })
+                    }
+                },
+                error: (res) => {
+                    $('#error_msg').show();
+                    $('#error_msg').html('Ha ocurrido un error al cargar los periodos.');
+                    setTimeout(function() {
+                        $("#error_msg").fadeOut(1500);
+                    }, 3000);
+                    periodSelect.value = "";
+                },
+                beforeSend: () => {
+                    periodSelect.add(new Option('Cargando...', 'cargando'));
+                    periodSelect.value = "cargando";
+                },
+                complete: (res) => {
+                    $('#error_msg').html('');
+                },
+            })
+        }
+
+        function exportData() {
+            let period_id = document.getElementById('periods').value;
+
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': "{{ csrf_token() }}"
+                }
+            });
+            $.ajax({
+                method: "GET",
+                url: "{{ route('contributions.export') }}",
+                dataType: 'json',
+                data: {
+                    period_id: period_id
+                },
+                success: (res) => {
+                    console.log(res);
+                },
+                error: (res) => {
+                    // console.log(res)
+                    $('#error_msg').show();
+                    $('#error_msg').html('Ha ocurrido un error al exportar los datos');
+                    setTimeout(function() {
+                        $("#error_msg").fadeOut(1500);
+                    }, 3000);
+                },
+            })
+        }
+
+        $('#btnExportData').on('click', function() {
+            getPeriods();
+            $('#modalExportData').modal('toggle');
+        })
     </script>
 @endsection

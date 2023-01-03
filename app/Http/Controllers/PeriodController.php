@@ -129,4 +129,15 @@ class PeriodController extends Controller
     {
         //
     }
+
+    public function getPeriods()
+    {
+        $periods = Period::where('status', true)->orderBy('id', 'desc')->get();
+        $response = [
+            'code' => 3,
+            'type' => 'success',
+            'data' => $periods
+        ];
+        return response()->json($response);
+    }
 }

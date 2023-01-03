@@ -21,6 +21,7 @@
     <script src="{{ asset('vendor/jsvalidation/js/jsvalidation.js') }}" type="text/javascript"></script>
     <script src="{{ asset('js/datepicker.bootstrap4.min.js') }}"></script>
     <script src="{{ asset('js/datepicker.bootstrap4.es-language.js') }}"></script>
+    <script src="{{ asset('js/select2.bootstrap.min.js') }}" ></script>
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
@@ -31,6 +32,7 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('fontawesome/css/all.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('css/bootstrap4-toggle.min.css') }}">
     <link rel="stylesheet" href="{{ asset('css/datepicker.bootstrap4.min.css') }}" />
+    <link rel="stylesheet" href="{{ asset('css/select2.min.css') }}" />
 </head>
 
 <body>

@@ -18,63 +18,19 @@ class ContributionExport implements
 
 {
     use Exportable;
-    // private $contributions;
-
-    // /**
-    //  * Export constructor
-    //  * @param Collection $contributions
-    //  */
-    // public function __construct(Collection $contributions)
-    // {
-    //     $this->contributions = $contributions;
-    // }
-
-    /**
-     * @return \Illuminate\Support\Collection
-     */
-    public function collection()
+    protected $period_id;
+    function __construct($period_id)
     {
-        return Contribution::exportAllContributions();
+        $this->period_id = $period_id;
     }
-
     public function view(): View
     {
         return view('exports.contributions', [
-            'contributions' => Contribution::exportAllContributions(),
+            'contributions' => Contribution::exportAllContributions($this->period_id),
             'categories' => Category::all(),
             'categoriesCount' => Category::countAllCategories()
         ]);
     }
-
-    // public function headings(): array
-    // {
-    //     return [
-    //         ['Fecha de aporte', ['dia 1', 'dia 2']],
-    //         // ['Categoria'],
-    //         // ['Monto'],
-    //         // ['Descripcion'],
-    //         // ['Periodo'],
-    //         // 'Fecha de aporte',
-    //         // 'Estudiante',
-    //         // 'Categoria',
-    //         // 'Monto',
-    //         // 'Descripcion',
-    //         // 'Periodo',
-    //     ];
-    // }
-
-    // public function map($contribution): array
-    // {
-    //     return [
-    //         $contribution->contribution_date,
-    //         $contribution->student->name . ' ' . $contribution->student->last_name,
-    //         $contribution->category->description,
-    //         $contribution->amount,
-    //         $contribution->description,
-    //         $contribution->period->description,
-    //     ];
-    // }
-
     public function registerEvents(): array
     {
         return [
@@ -87,8 +43,4 @@ class ContributionExport implements
                 },
         ];
     }
-// public function startCell(): string
-// {
-//     return 'A8';
-// }
 }

@@ -72,6 +72,7 @@ Route::group(['middleware' => ['auth']], function () {
             Route::get('/periods/show/{id}', 'show')->name('show');
             Route::get('/periods/edit/{id}', 'edit')->name('edit');
             Route::post('/periods/update/{id}', 'update')->name('update');
+            Route::get('/getPeriods', 'getPeriods')->name('getPeriods');
         });
     });
 });
