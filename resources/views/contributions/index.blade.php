@@ -195,38 +195,15 @@
             })
         }
 
-        function exportData() {
-            let period_id = document.getElementById('periods').value;
-
-            $.ajaxSetup({
-                headers: {
-                    'X-CSRF-TOKEN': "{{ csrf_token() }}"
-                }
-            });
-            $.ajax({
-                method: "GET",
-                url: "{{ route('contributions.export') }}",
-                dataType: 'json',
-                data: {
-                    period_id: period_id
-                },
-                success: (res) => {
-                    console.log(res);
-                },
-                error: (res) => {
-                    // console.log(res)
-                    $('#error_msg').show();
-                    $('#error_msg').html('Ha ocurrido un error al exportar los datos');
-                    setTimeout(function() {
-                        $("#error_msg").fadeOut(1500);
-                    }, 3000);
-                },
-            })
-        }
-
         $('#btnExportData').on('click', function() {
             getPeriods();
             $('#modalExportData').modal('toggle');
         })
+
+        $('#cerrarModal').on('click', function() {
+            $('#modalExportData').modal('toggle');
+        })
+
+
     </script>
 @endsection

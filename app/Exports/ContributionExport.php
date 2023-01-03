@@ -11,11 +11,7 @@ use Illuminate\Contracts\View\View;
 class ContributionExport implements
     FromView,
     ShouldAutoSize,
-    // WithMapping, 
-    // WithHeadings, 
     WithEvents
-// WithCustomStartCell
-
 {
     use Exportable;
     protected $period_id;

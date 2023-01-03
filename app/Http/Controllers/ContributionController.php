@@ -202,13 +202,7 @@ class ContributionController extends Controller
 
     public function export(Request $request)
     {
-        $period_id = $request->input('period_id');
-        $exportedData = Excel::download(new ContributionExport($period_id), '.xlsx');
-
-        $response = [
-            'name' => "aportes", 
-            'file' => "data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64," . base64_encode($exportedData) //mime type of used format
-        ];
-        return response()->json($response);
+        $period_id = $request->input('periods');
+        return Excel::download(new ContributionExport($period_id), 'aportes.xlsx');
     }
 }
