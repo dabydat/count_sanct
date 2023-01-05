@@ -2,11 +2,6 @@
 /public/build
 /public/hot
 /public/storage
-<<<<<<< Updated upstream
-=======
-/public/vendor
-/storage/*.key
->>>>>>> Stashed changes
 /vendor
 .env
 .env.backup
