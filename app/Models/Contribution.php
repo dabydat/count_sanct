@@ -31,8 +31,6 @@ class Contribution extends Model
             'contribution_date'
         );
 
-        // $query = $query->orderBy('contribution_date', 'asc')->orderBy('period_id', 'desc');
-
         if ($request->start <> "") $query = $query->skip($request->start);
         if ($request->length <> "") $query = $query->take($request->length);
 
