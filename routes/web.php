@@ -54,6 +54,7 @@ Route::group(['middleware' => ['auth']], function () {
             Route::get('/contributions', 'index')->name('index');
             Route::post('/contributionsList', 'list')->name('list');
             Route::post('/contributionsPerPeriodsList', 'contributionsPerPeriodsList')->name('contributionsPerPeriodsList');
+            Route::post('/contributionsPerPeriodsReceivedList', 'contributionsPerPeriodsReceivedList')->name('contributionsPerPeriodsReceivedList');
             Route::post('/contributionsPerStudentPerPeriodsList', 'contributionsPerStudentPerPeriodsList')->name('contributionsPerStudentPerPeriodsList');
             Route::get('/contributions/create', 'create')->name('create');
             Route::post('/contributions/store', 'store')->name('store');

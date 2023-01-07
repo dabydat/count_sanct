@@ -34,10 +34,11 @@ class ContributionController extends Controller
             $datas[] = [
                 'nro' => $value->nro,
                 'contribution_date' => $value->contribution_date,
+                'period_received' => $value->period_received,
                 'student' => $value->student->name . ' ' . $value->student->last_name,
                 'category' => $value->category->description,
                 'amount' => $value->amount,
-                'period' => $value->period->description,
+                'period_affected' => $value->period_affected,
                 'description' => substr($value->description, 0, 35) . '...',
                 'actions' => $this->getAction('contributions', $value->id)
             ];
@@ -102,6 +103,30 @@ class ContributionController extends Controller
         return json_encode($response);
     }
 
+    public function contributionsPerPeriodsReceivedList(Request $request)
+    {
+        $draw = $request->draw;
+        $data = Contribution::totalAmountReceivedPerPeriodReceived($request)->get();
+        $totalRecords = Contribution::totalAmountReceivedPerPeriodReceivedCount();
+        $datas = [];
+        foreach ($data as $key => $value) {
+            $datas[] = [
+                'nro' => $value->nro,
+                'description' => $value->description,
+                'total_amount' => $value->total_amount,
+            ];
+        }
+
+        $response = array(
+            "draw" => intval($draw),
+            "iTotalRecords" => $totalRecords,
+            "iTotalDisplayRecords" => $totalRecords,
+            "aaData" => $datas
+        );
+
+        return json_encode($response);
+    }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -128,7 +153,8 @@ class ContributionController extends Controller
             Contribution::create([
                 'student_id' => $request->input('students'),
                 'category_id' => $request->input('categories'),
-                'period_id' => $request->input('periods'),
+                'period_affected_id' => $request->input('periods_affected'),
+                'period_received_id' => $request->input('periods_received'),
                 'amount' => $request->input('amount'),
                 'description' => $request->input('description'),
                 'contribution_date' => $request->input('contribution_date')
@@ -151,23 +177,11 @@ class ContributionController extends Controller
     public function show(Request $request, $id)
     {
         $method = $this->method($request->route()->getName());
-        $contribution = Contribution::with(
-            [
-                'student' => function ($query) {
-                    $query->where('status', true);
-                }
-            ],
-            [
-                'category' => function ($query) {
-                    $query->where('status', true);
-                }
-            ],
-            [
-                'period' => function ($query) {
-                    $query->where('status', true);
-                }
-            ]
-        )->where('id', $id)->first();
+        $contribution = Contribution::with(['student' => function ($query) {$query->where('status', true);}],[ 'category' => function ($query) {$query->where('status', true);}])
+        ->select('periods_affected.description as periods_affected', 'periods_received.description as periods_received', 'student_id', 'category_id', 'amount', 'bs_amount','contributions.description', 'contributions.id', 'contribution_date')
+        ->join('periods as periods_affected', 'periods_affected.id', 'period_affected_id')
+        ->join('periods as periods_received', 'periods_received.id', 'period_received_id')
+        ->where('contributions.id', $id)->first();
         return view('contributions.form', compact('method', 'contribution'));
     }
 
@@ -200,7 +214,8 @@ class ContributionController extends Controller
             Contribution::where('id', $id)->update([
                 'student_id' => $request->input('students'),
                 'category_id' => $request->input('categories'),
-                'period_id' => $request->input('periods'),
+                'period_affected_id' => $request->input('periods_affected'),
+                'period_received_id' => $request->input('periods_received'),
                 'amount' => $request->input('amount'),
                 'description' => $request->input('description'),
                 'contribution_date' => $request->input('contribution_date')

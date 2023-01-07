@@ -24,10 +24,10 @@ class StudentRequest extends FormRequest
     public function rules()
     {
         return [
-            "name"  => "required|min:5",
-            "last_name"  => "nullable|min:5",
+            "name"  => "required|min:3",
+            "last_name"  => "nullable|min:3",
             "email"  => "required|unique:students|regex:/^([a-z0-9\+_\-]+)(\.[a-z0-9\+_\-]+)*@([a-z0-9\-]+\.)+[a-z]{2,6}$/ix",
-            "dni"  => "nullable|int|min:5",
+            "dni"  => "nullable|int|min:3",
             "phone"  => "nullable|min:10",
 
         ];
@@ -42,7 +42,7 @@ class StudentRequest extends FormRequest
     {
         return [
             "name.required" => "El nombre del estudiante es requerido.",
-            "name.min" => "El nombre del estudiante minimo de 5 caracteres.",
+            "name.min" => "El nombre del estudiante minimo de 3 caracteres.",
             "email.required" => "El correo del estudiante es requerido.",
             "email.unique" => "Este correo ya existe, por favor intente nuevamente.",
             "email.regex" => "No cumple con la forma de un correo, intente nuevamente.",

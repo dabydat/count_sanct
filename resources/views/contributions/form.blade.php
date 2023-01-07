@@ -83,6 +83,26 @@
                         </div>
                     </div>
                     <div class="form-group col-md-6">
+                        <label for="period">Periodo de Recibo</label>
+                        @if ($method == 'show')
+                            <input class="form-control" type="text" name="period" id="period"
+                                value="{{ $contribution->periods_received }}" disabled>
+                        @else
+                            <select class="form-control form-select" name="periods_received" id="periods_received">
+                                <option value="">Seleccione una opción...</option>
+                                @foreach ($periods as $period)
+                                    @if (isset($contribution) && $period->id == $contribution->period_received_id)
+                                        <option value="{{ $period->id }}" selected>{{ $period->description }}</option>
+                                    @else
+                                        <option value="{{ $period->id }}">{{ $period->description }}</option>
+                                    @endif
+                                @endforeach
+                            </select>
+                        @endif
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="form-group col-md-6">
                         <label for="amount">Monto</label>
                         <input class="form-control" type="text" name="amount" id="amount"
                             placeholder="Ingrese el monto del aporte..."
@@ -92,18 +112,16 @@
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
                     </div>
-                </div>
-                <div class="row mb-3">
                     <div class="form-group col-md-6">
-                        <label for="period">Periodo</label>
+                        <label for="period">Periodo Afectado</label>
                         @if ($method == 'show')
                             <input class="form-control" type="text" name="period" id="period"
-                                value="{{ $contribution->period->description }}" disabled>
+                                value="{{ $contribution->periods_affected}}" disabled>
                         @else
-                            <select class="form-control form-select" name="periods" id="periods">
+                            <select class="form-control form-select" name="periods_affected" id="periods_affected">
                                 <option value="">Seleccione una opción...</option>
                                 @foreach ($periods as $period)
-                                    @if (isset($contribution) && $period->id == $contribution->period_id)
+                                    @if (isset($contribution) && $period->id == $contribution->period_affected_id)
                                         <option value="{{ $period->id }}" selected>{{ $period->description }}</option>
                                     @else
                                         <option value="{{ $period->id }}">{{ $period->description }}</option>
@@ -112,15 +130,15 @@
                             </select>
                         @endif
                     </div>
-                    <div class="form-group col-md-6">
-                        <label for="description">Descripcion</label>
-                        <textarea class="form-control" id="description" name="description" rows="3"
-                            placeholder="Ingrese una breve descripcion del aporte..." @if($method == 'show') disabled @endif>{{ isset($contribution->description) ? $contribution->description : old('description') }}
-                        </textarea>
-                        @error('description')
-                            <span class="text-danger">{{ $message }}</span>
-                        @enderror
-                    </div>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="description">Descripcion</label>
+                    <textarea class="form-control" id="description" name="description" rows="3"
+                        placeholder="Ingrese una breve descripcion del aporte..." @if ($method == 'show') disabled @endif>{{ isset($contribution->description) ? $contribution->description : old('description') }}
+                    </textarea>
+                    @error('description')
+                        <span class="text-danger">{{ $message }}</span>
+                    @enderror
                 </div>
                 @if ($method != 'show')
                     <button type="submit" class="btn btn-primary">Guardar</button>

@@ -19,12 +19,13 @@
                     <thead>
                         <tr class="text-center">
                             <th style="width:20px">N°</th>
+                            <th>Periodo Recibido</th>
                             <th>Dia de aporte</th>
                             <th>Estudiante</th>
                             <th>Categoria</th>
                             <th>Aporte</th>
                             <th>Descripcion</th>
-                            <th>Periodo</th>
+                            <th>Periodo Afectado</th>
                             <th>Acciones</th>
                         </tr>
                     </thead>
@@ -64,6 +65,22 @@
                 </table>
             </div>
         </div>
+        <div class="row">
+            <div class="col-8">
+                <h1>Monto total recibido por periodo</h1>
+            </div>
+            <div class="col-sm-12">
+                <table id="contributionsPerPeriodsReceived" class="table table-bordered table-striped text-center">
+                    <thead>
+                        <tr class="text-center">
+                            <th style="width:20px">N°</th>
+                            <th>Periodo</th>
+                            <th>Monto Total</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
     </div>
     @include('contributions.modal.export_data')
 @endsection
@@ -73,6 +90,7 @@
             contributionsList();
             contributionsPerPeriodsList();
             contributionsPerStudentPerPeriodsList();
+            contributionsPerPeriodsReceivedList();
         });
 
         function contributionsList() {
@@ -108,6 +126,10 @@
                         orderable: false
                     },
                     {
+                        data: 'period_received',
+                        orderable: false
+                    },
+                    {
                         data: 'student',
                         orderable: false
                     },
@@ -124,7 +146,7 @@
                         orderable: false
                     },
                     {
-                        data: 'period',
+                        data: 'period_affected',
                         orderable: false
                     },
                     {
@@ -213,6 +235,46 @@
                     },
                     {
                         data: 'total_amount_student',
+                        orderable: false
+                    }
+                ],
+            });
+        }
+
+        function contributionsPerPeriodsReceivedList() {
+            var token = $("input[name~='_token']").val();
+            $("#contributionsPerPeriodsReceived").DataTable({
+                serverSide: true,
+                processing: false,
+                destroy: true,
+                responsive: true,
+                autoWidth: false,
+                searching: false,
+                info: true,
+                pagingType: "full_numbers",
+                pageLength: 10,
+                bLengthChange: false,
+                language: {
+                    "url": "../vendor/datatables/es/es.json",
+                    // "processing": '<i class="fa fa-spinner fa-spin fa-2x fa-fw"></i>'
+                },
+                ajax: {
+                    url: "{{ route('contributions.contributionsPerPeriodsReceivedList') }}",
+                    type: "POST",
+                    data: {
+                        "_token": token,
+                    },
+                },
+                columns: [{
+                        data: 'nro',
+                        orderable: false
+                    },
+                    {
+                        data: 'description',
+                        orderable: false
+                    },
+                    {
+                        data: 'total_amount',
                         orderable: false
                     }
                 ],

@@ -14,7 +14,10 @@ return new class extends Migration
     public function up()
     {
         Schema::table('contributions', function (Blueprint $table) {
-            $table->foreignId('period_id')->constrained()->cascadeOnDelete();
+            // $table->foreignId('period_affected_id')->constrained()->cascadeOnDelete();
+            // $table->foreignId('period_received_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('period_affected_id')->constrained('periods')->onDelete('cascade'); 
+            $table->foreignId('period_received_id')->constrained('periods')->onDelete('cascade'); 
         });
     }
 
@@ -26,7 +29,8 @@ return new class extends Migration
     public function down()
     {
         Schema::table('contributions', function (Blueprint $table) {
-            $table->dropForeign('contributions_period_id_foreign');
+            $table->dropForeign('contributions_period_affected_id_foreign');
+            $table->dropForeign('contributions_period_received_id_foreign');
         });
     }
 };

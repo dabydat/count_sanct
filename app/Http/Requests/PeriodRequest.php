@@ -24,7 +24,7 @@ class PeriodRequest extends FormRequest
     public function rules()
     {
         return [
-            "description" => "required|unique:periods|min:7",
+            "description" => "required|unique:periods|min:3",
         ];
     }
 
@@ -37,7 +37,7 @@ class PeriodRequest extends FormRequest
     {
         return [
             "description.required" => "El nombre del periodo es requerido.",
-            "description.min" => "El periodo debe contener al menos 7 letras.",
+            "description.min" => "El periodo debe contener al menos 3 letras.",
             "description.unique" => "Este periodo existe, verifique nuevamente...",
         ];
     }
