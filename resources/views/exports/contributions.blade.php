@@ -5,6 +5,7 @@
             <th rowspan="2">Estudiante</th>
             <th rowspan="2">Categoria</th>
             <th rowspan="2">Descripcion</th>
+            <th rowspan="2">Monto en BS</th>
             <th rowspan="2">Periodo</th>
             <th style="padding:2.5px;" colspan="{{ $categoriesCount }}">Aporte</th>
         </tr>
@@ -24,6 +25,7 @@
                 <td>{{ $contribution->student->name . ' ' . $contribution->student->last_name }}</td>
                 <td>{{ $contribution->category->description }}</td>
                 <td>{{ $contribution->description }}</td>
+                <td>{{ $contribution->bs_amount }}</td>
                 <td>{{ $contribution->period_affected }}</td>
                 @foreach ($categories as $category)
                     @if ($category->description == $contribution->category->description)

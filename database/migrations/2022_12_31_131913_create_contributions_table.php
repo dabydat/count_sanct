@@ -19,7 +19,7 @@ return new class extends Migration
             $table->foreignId('category_id')->constrained()->cascadeOnDelete();
             $table->date('contribution_date');
             $table->decimal('amount', 15, 2);
-            $table->decimal('bs_amount', 20, 2);
+            $table->decimal('bs_amount', 20, 2)->nullable();
             $table->text('description')->nullable();
             $table->boolean('status')->default(true);
             $table->timestamp('created_at')->useCurrent();
