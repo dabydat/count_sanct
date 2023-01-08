@@ -19,8 +19,8 @@
                     <thead>
                         <tr class="text-center">
                             <th style="width:20px">N°</th>
-                            <th>Periodo Recibido</th>
                             <th>Dia de aporte</th>
+                            <th>Periodo Recibido</th>
                             <th>Estudiante</th>
                             <th>Categoria</th>
                             <th>Aporte</th>
@@ -34,7 +34,7 @@
         </div>
         <div class="row">
             <div class="col-8">
-                <h1>Aporte total del estudiante por periodo</h1>
+                <h1>Aporte total del estudiante en un periodo</h1>
             </div>
             <div class="col-sm-12">
                 <table id="contributionsPerStudentPerPeriodsList" class="table table-bordered table-striped text-center">
@@ -51,7 +51,7 @@
         </div>
         <div class="row">
             <div class="col-8">
-                <h1>Monto total efectuado por periodo</h1>
+                <h1>Monto total efectuado de un periodo</h1>
             </div>
             <div class="col-sm-12">
                 <table id="contributionsPerPeriods" class="table table-bordered table-striped text-center">
@@ -67,7 +67,7 @@
         </div>
         <div class="row">
             <div class="col-8">
-                <h1>Monto total recibido por periodo</h1>
+                <h1>Dinero total recibido por periodo</h1>
             </div>
             <div class="col-sm-12">
                 <table id="contributionsPerPeriodsReceived" class="table table-bordered table-striped text-center">
