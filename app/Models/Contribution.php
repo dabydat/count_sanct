@@ -148,7 +148,20 @@ class Contribution extends Model
         // ->join('periods', 'period_id', 'periods.id')
         // ->orderBy('contribution_date')
         // ->get();
-        return Contribution::with(['student'],['category'],['period'])->select('*')->where('period_affected_id', $period_id)->orderBy('contribution_date')->orderBy('contributions.category_id')->get();
+        return Contribution::with(['student'],['category'])->select(
+            'contributions.id',
+            'student_id',
+            'category_id',
+            'amount',
+            'contributions.description',
+            'period_affected_id',
+            'contribution_date',
+            'periods_affected.description as period_affected',
+        )->join('periods as periods_affected', 'periods_affected.id', 'period_affected_id')
+        ->where('period_affected_id', $period_id)
+        ->orderBy('contribution_date')
+        ->orderBy('contributions.category_id')
+        ->get();
     }
 
     public function student(){

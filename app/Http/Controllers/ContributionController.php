@@ -156,6 +156,7 @@ class ContributionController extends Controller
                 'period_affected_id' => $request->input('periods_affected'),
                 'period_received_id' => $request->input('periods_received'),
                 'amount' => $request->input('amount'),
+                'bs_amount' => $request->input('bs_amount'),
                 'description' => $request->input('description'),
                 'contribution_date' => $request->input('contribution_date')
             ]);
@@ -217,6 +218,7 @@ class ContributionController extends Controller
                 'period_affected_id' => $request->input('periods_affected'),
                 'period_received_id' => $request->input('periods_received'),
                 'amount' => $request->input('amount'),
+                'bs_amount' => $request->input('bs_amount'),
                 'description' => $request->input('description'),
                 'contribution_date' => $request->input('contribution_date')
             ]);

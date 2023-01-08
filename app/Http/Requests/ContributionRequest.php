@@ -31,6 +31,7 @@ class ContributionRequest extends FormRequest
             "periods_received" => "required",
             "periods_affected" => "required",
             "description" => "nullable|min:5",
+            "bs_amount" => "nullable|min:2",
         ];
     }
 
@@ -49,6 +50,7 @@ class ContributionRequest extends FormRequest
             "periods_received.required" => "Tiene que seleccionar un periodo de recibo.",
             "periods_affected.required" => "Tiene que seleccionar un periodo afectado.",
             "description.min" => "La descripción tiene que contener minimo 5 dígitos.",
+            "bs_amount.min" => "El monto en bolivares debe tener minimo 2 dígitos.",
         ];
     }
 }

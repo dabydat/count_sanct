@@ -24,7 +24,7 @@
                 <td>{{ $contribution->student->name . ' ' . $contribution->student->last_name }}</td>
                 <td>{{ $contribution->category->description }}</td>
                 <td>{{ $contribution->description }}</td>
-                <td>{{ $contribution->period->description }}</td>
+                <td>{{ $contribution->period_affected }}</td>
                 @foreach ($categories as $category)
                     @if ($category->description == $contribution->category->description)
                         <td>{{ $contribution->amount }}</td>
