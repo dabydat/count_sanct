@@ -28,8 +28,8 @@ class ContributionRequest extends FormRequest
             "categories" => "required",
             "contribution_date" => "required",
             "amount" => "required",
-            "period_received_id" => "required",
-            "period_affected_id" => "required",
+            "periods_received" => "required",
+            "periods_affected" => "required",
             "description" => "nullable|min:5",
         ];
     }
@@ -46,8 +46,8 @@ class ContributionRequest extends FormRequest
             "categories.required" => "Tiene que seleccionar una categoría.",
             "contribution_date.required" => "La fecha del aporte es importante.",
             "amount.required" => "El monto del aporte no debe faltar.",
-            "period_received_id.required" => "Tiene que seleccionar un periodo.",
-            "period_affected_id.required" => "Tiene que seleccionar un periodo.",
+            "periods_received.required" => "Tiene que seleccionar un periodo de recibo.",
+            "periods_affected.required" => "Tiene que seleccionar un periodo afectado.",
             "description.min" => "La descripción tiene que contener minimo 5 dígitos.",
         ];
     }
